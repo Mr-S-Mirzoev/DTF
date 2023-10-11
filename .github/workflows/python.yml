@@ -1,0 +1,64 @@
+name: Python CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: [3.11.7]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Debug log
+        run: echo Starting CI
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Update pip
+        run: |
+          python -m pip install --upgrade pip==23.3.1
+
+      - name: Cache pip dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            venv
+            .cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/*.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install -r requirements.txt
+
+      - name: Linting
+        run: |
+          pip install -r requirements-dev.txt
+          isort . --diff
+          isort . --check-only
+          black --diff .
+          black --check .
+          flake8 . --exclude venv
+
+      - name: Pylint
+        run: |
+          find . -type f -name "*.py" -not -path "./venv/*" | xargs -r pylint
+
+      - name: Debug log
+        run: echo Finished running CI
