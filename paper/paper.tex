@@ -63,6 +63,71 @@ For an asset class to offer protection against inflation, the asset returns have
     \item XLE: Energy Stocks (Energy Select Sector SPDR Fund)
 \end{itemize}
 
+\subsubsection*{Visual inspection}
+
+Visual inspection is a very quick way to determine if there's a relationship between the different asset classes. We look at the time series of the Log Returns of both the adjusted and non adjusted returns to see any potential relationships. Altough this is not very clear, it allows us to draw the first conclusions. In figure \ref{fig:mesh2} on page \pageref{fig:mesh2}, we can clearly see that bonds (GS10, GS30) are very very closely related and also follow CPI. We also can see a relationship between DBC (commodities) and XLE (energy).
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\textwidth]{figure/Normalized_Returns.pdf}
+    \caption{Normalized Yearly Rolling Log-Returns of different Asset Classes.}
+    \label{fig:mesh2}
+\end{figure}
+
+
+
+\subsubsection*{Correlation}
+
+High correlation shows a linear relationship between the data. Using our data of yearly returns (rolling 1Y log returns) we can compute the pairwise correlation (correlation matrix). We are interested in the correlation between the CPI (CPIAUSCL) and a given asset class. The reason to compute the correlation in the returns and not in the prices, is that we can assume that returns are independent and identically distributed. Based on this result, we can observe that Energy ETF (XLE), Bonds (GS10, GS30), Oil (DCOILWTICO), Commodities (DBC)... are very postively correlated with inflation.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figure/Correlation_Matrix.pdf}
+    \caption{Correlation Matrix.}
+    \label{fig:mesh1}
+\end{figure}
+
+
+\subsubsection*{Cointegration}
+
+Based on the understanding of correlation in financial data, we can extend our analysis to explore the concept of cointegration. Cointegration is a statistical property of a collection of time series variables which indicates that a long-term equilibrium relationship exists between them. Unlike correlation that merely identifies the linear relationship in the level of data, cointegration delves deeper by detecting a link in their long-term trends, despite short-term deviations.
+
+In our case, examining cointegration among assets like the Energy ETF (XLE), Bonds (GS10, GS30), Oil (DCOILWTICO), Commodities (DBC), and inflation metrics such as the CPI, would be insightful. This is particularly important because financial markets often exhibit trends and mean-reverting behavior over longer periods. While correlation informs us about the degree of linear relationship in the returns, cointegration helps us understand the extent to which these asset classes move together over time, bound by an equilibrium relationship.
+
+By investigating cointegration, we can assess whether any discrepancies between these assets and inflation are temporary or indicative of a fundamental shift. This understanding is crucial for long-term investment strategies and risk management, as it helps in identifying pairs or groups of assets that are likely to move in sync over time. Such analysis is especially relevant in market conditions characterized by significant economic changes, where long-term relationships might be more stable and reliable compared to short-term correlations.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{paper/figure/Cointegration_Matrix.pdf}
+    \caption{Cointegration Matrix.}
+    \label{fig:mesh3}
+\end{figure}
+
+\section{Approach and Results}
+
+In the following part we describe in more detail our approach as well as the results. 
+
+\subsection{The Concept of Portfolio Optimization}
+
+\subsubsection*{Efficient Frontier}
+
+The heart of Markowitz's theory is the "Efficient Frontier," a graphical representation showing the optimal set of portfolios providing the maximum possible expected return for a given level of risk. Portfolios that lie below the efficient frontier are sub-optimal because they do not provide enough return for the level of risk they carry.
+
+\subsubsection*{Risk and Return}
+
+In Markowitz's framework, risk is quantified as the standard deviation of portfolio returns, a measure of variability in returns. Return is the expected return of the portfolio, a weighted sum of the expected returns of the individual assets.
+
+\subsection{Mathematical Formulation}
+
+\subsubsection*{Expected Portfolio Return}
+
+The expected return of a portfolio is the weighted sum of the returns of the individual asset classes:
+
+\begin{equation}
+R_p = \sum_{i=1}^{n} w_i \times R_i
+\end{equation}
+
+where \( R_p \) is the expected portfolio return, \( n \) is the number of assets in the portfolio, \( w_i \) is the weight of the asset \textit{i}, and \( R_i \) is the expected return of the asset \textit{i}.
 
 
 \end{document}
