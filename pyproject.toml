@@ -21,6 +21,7 @@ disable = [
     "broad-except",
     "import-error",
     "invalid-name",
+    "missing-class-docstring",
     "missing-function-docstring",
     "missing-module-docstring",
     "no-member",
