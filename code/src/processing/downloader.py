@@ -1,3 +1,4 @@
+import argparse
 import logging
 import os
 import sqlite3
@@ -13,38 +14,65 @@ import yfinance as yf
 
 
 class DataDownloader:
-    expected_source = [
-        "yahoo",
-        "iex",
-        "iex-tops",
-        "iex-last",
-        "iex-last",
-        "bankofcanada",
-        "stooq",
-        "iex-book",
-        "enigma",
-        "fred",
-        "famafrench",
-        "oecd",
-        "eurostat",
-        "nasdaq",
-        "quandl",
-        "moex",
-        "tiingo",
-        "yahoo-actions",
-        "yahoo-dividends",
-        "av-forex",
-        "av-forex-daily",
-        "av-daily",
-        "av-daily-adjusted",
-        "av-weekly",
-        "av-weekly-adjusted",
-        "av-monthly",
-        "av-monthly-adjusted",
-        "av-intraday",
-        "econdb",
-        "naver",
-    ]
+    """
+    Class for downloading, processing, and saving financial data.
+
+    Args:
+        lst_tickers (list, optional): List of ticker symbols to download data\
+            for. Defaults to [{"fred": "CPIAUCSL"}].
+        start_date (datetime, optional): Start date for data download.\
+            Defaults to datetime(1970, 1, 1).
+        end_date (datetime, optional): End date for data download.\
+            Defaults to datetime(2023, 12, 1).
+        concurrency (int, optional): Number of concurrent threads\
+            for data download. Defaults to 5.
+        save (bool, optional): Flag indicating whether to save\
+            the downloaded data. Defaults to True.
+        base_path (str, optional): Base path for saving the data.\
+            Defaults to "./data".
+
+    """
+
+    @property
+    def expected_source(self):
+        """
+        Returns a list of expected data sources.
+
+        Returns:
+            list: A list of strings representing the expected data sources.
+        """
+        return [
+            "yahoo",
+            "iex",
+            "iex-tops",
+            "iex-last",
+            "iex-last",
+            "bankofcanada",
+            "stooq",
+            "iex-book",
+            "enigma",
+            "fred",
+            "famafrench",
+            "oecd",
+            "eurostat",
+            "nasdaq",
+            "quandl",
+            "moex",
+            "tiingo",
+            "yahoo-actions",
+            "yahoo-dividends",
+            "av-forex",
+            "av-forex-daily",
+            "av-daily",
+            "av-daily-adjusted",
+            "av-weekly",
+            "av-weekly-adjusted",
+            "av-monthly",
+            "av-monthly-adjusted",
+            "av-intraday",
+            "econdb",
+            "naver",
+        ]
 
     def __init__(
         self,
@@ -208,6 +236,15 @@ class DataDownloader:
         return pd.concat(self.resampled_data, axis=1)
 
     def save_data(self, df):
+        """
+        Save the given data to the SQLite database.
+
+        Args:
+            df (pandas.DataFrame): The data to be saved.
+
+        Returns:
+            None
+        """
         with sqlite3.connect(self.db_path) as conn:
             df.index = df.index.strftime("%Y-%m-%d %H:%M:%S")
             self.logger.info(df)
@@ -227,6 +264,13 @@ class DataDownloader:
             self.logger.info("Done saving data")
 
     def load_data(self):
+        """
+        Loads data from the database for the specified tickers.
+
+        Returns:
+            pandas.DataFrame: The loaded data with\
+                columns ['date', 'ticker', 'value'].
+        """
         with sqlite3.connect(self.db_path) as conn:
             cursor = conn.cursor()
             tickers = ",".join(["?"] * len(self.tickers))
@@ -239,6 +283,13 @@ class DataDownloader:
             return df
 
     def download_data(self):
+        """
+        Downloads the data by queuing the download,\
+            resampling it, and concatenating it.
+
+        Returns:
+            pandas.DataFrame: The downloaded and concatenated data.
+        """
         self.queue_download_data()
 
         self.resample_data(freq="D")
@@ -251,24 +302,41 @@ class DataDownloader:
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "-d", "--data-folder", help="Data folder path", default="./data"
+    )
+    args = parser.parse_args()
+
     data_downloader = DataDownloader(
         lst_tickers=[
-            {"yahoo": "XHB"},
-            {"fred": "CPIAUCSL"},
-            {"fred": "DCOILWTICO"},
-            {"yahoo": "^GSPC"},
-            {"yahoo": "GC=F"},
-            {"fred": "GS10"},
-            {"fred": "GS30"},
-            {"yahoo": "VNQ"},
-            {"yahoo": "DBC"},
-            {"yahoo": "FXE"},
-            {"yahoo": "BTC-USD"},
-            {"yahoo": "IGF"},
-            {"yahoo": "XLE"},
+            {
+                "yahoo": "XHB"
+            },  # Median Sale Price of Houses Sold in the United States
+            {
+                "fred": "CPIAUCSL"
+            },  # Consumer Price Index for All Urban Consumers
+            {
+                "fred": "DCOILWTICO"
+            },  # Crude Oil Prices: West Texas Intermediate (WTI)
+            {"yahoo": "^GSPC"},  # S&P 500 Index
+            {"yahoo": "GC=F"},  # Gold Futures
+            {"fred": "GS10"},  # 10-Year Treasury Constant Maturity Rate
+            {"fred": "GS30"},  # 30-Year Treasury Constant Maturity Rate
+            {"yahoo": "VNQ"},  # REITs (Vanguard Real Estate ETF)
+            {
+                "yahoo": "DBC"
+            },  # Commodities (Invesco DB Commodity Index Tracking Fund)
+            {"yahoo": "FXE"},  # Foreign Currencies (CurrencyShares Euro Trust)
+            {"yahoo": "BTC-USD"},  # Cryptocurrencies (Bitcoin)
+            {
+                "yahoo": "IGF"
+            },  # Infrastructure Funds (iShares Global Infrastructure ETF)
+            {"yahoo": "XLE"},  # Energy Stocks (Energy Select Sector SPDR Fund)
         ],
         concurrency=10,
         save=True,
+        base_path=args.data_folder,
     )
     data_downloader.download_data()
     data = data_downloader.load_data()
