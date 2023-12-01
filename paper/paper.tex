@@ -8,7 +8,7 @@
 
 \title{Markowitz Portfolio Optimization with Inflation}
 \author{Pablo Duce Cabeza, Djordje Nikolic, Sergey Mirzoev, Marc Tschudi}
-\date{October 2023}
+\date{December 2023}
 
 \begin{document}
 
@@ -62,6 +62,7 @@ For an asset class to offer protection against inflation, the asset returns have
     \item IGF: Infrastructure Funds (iShares Global Infrastructure ETF)
     \item XLE: Energy Stocks (Energy Select Sector SPDR Fund)
 \end{itemize}
+
 
 \subsubsection*{Visual inspection}
 
@@ -129,5 +130,105 @@ R_p = \sum_{i=1}^{n} w_i \times R_i
 
 where \( R_p \) is the expected portfolio return, \( n \) is the number of assets in the portfolio, \( w_i \) is the weight of the asset \textit{i}, and \( R_i \) is the expected return of the asset \textit{i}.
 
+\subsubsection*{Portfolio Variance}
+
+The risk of the portfolio is often quantified by its variance and is given by:
+
+\begin{equation}
+\sigma_p^2 = \sum_{i=1}^{n} \sum_{j=1}^{n} w_i \times w_j \times \sigma_{ij}
+\end{equation}
+
+where \( \sigma_p^2 \) is the portfolio variance, \( \sigma_{ij} \) is the covariance between the returns of assets \textit{i} and \textit{j}.
+
+\subsubsection*{Sharpe Ratio}
+
+The Sharpe ratio is used to measure the risk-adjusted return of the portfolio. It put the portfolio return into relation with the portfolio's standard deviation and is calculated as follows:
+
+\begin{equation}
+\text{Sharpe Ratio} = \frac{R_p - R_f}{\sigma_p}
+\end{equation}
+
+where \( R_f \) is the risk-free rate.
+
+\subsection{The Optimization Problem}
+
+The objective of the  portfolio optimization is to find the set of weights \( \{ w_i \} \) that maximizes the Sharpe ratio, or alternatively, minimizes the negative Sharpe ratio.
+
+
+For the optimization problem, we put in place the following two constraints to ensure a level of diversification in the final pportfolio:
+
+\begin{itemize}
+    \item The sum of the weights must equal 1: \( \sum_{i=1}^{n} w_i = 1 \).
+    \item Each weight must be within predefined bounds of 5\% and 30\%.
+\end{itemize}
+
+\subsubsection*{Method}
+
+The optimization is typically performed using numerical methods, such as the Sequential Least Squares Programming (SLSQP) algorithm used in the provided Python code. This algorithm is commonly used for solving nonlinear constrained optimization problems. It belongs to the class of sequential quadratic programming methods and is particularly effective for problems where the objective function and constraints are nonlinear.
+
+The primary goal of the SLSQP algorithm is to find the values of the decision variables that minimize or maximize a given objective function, subject to a set of constraints. In mathematical terms, the algorithm aims to solve problems of the form:
+
+Minimize or maximize \( f(x) \) with subject to:
+\begin{itemize}
+    \item \( c_j(x) &= 0, \quad j = 1, \ldots, m \text{ (equality constraints)} \)
+    \item \( c_k(x) &\geq 0, \quad k = 1, \ldots, n \text{ (inequality constraints)} \)
+\end{itemize}
+
+Here, \( x \) represents the vector of decision variables, \( f(x) \) is the objective function, and \( c_j(x) \) and \( c_k(x) \) are the equality and inequality constraints, respectively.
+The SLSQP algorithm iteratively refines its solution by approximating the objective function and constraints using quadratic models. It combines aspects of the Sequential Quadratic Programming (SQP) method with the use of least squares minimization. The algorithm proceeds through a series of iterations, adjusting the decision variables to move toward an optimal solution while satisfying the constraints.
+
+Overall, the Sequential Least Squares Programming algorithm is a versatile optimization tool suitable for a wide range of nonlinear constrained optimization problems, making it particularly valuable in various fields, including finance, engineering, and scientific research.
+
+\subsection{Optimization Results}
+
+According to our asset class selection methodology as well as optimization we have the final portfolio which is listed in table 1:
+
+
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ | m{7cm} | m{4cm} | }
+ \hline
+ \textbf{Asset Class} & \textbf{Weight} \\
+ \hline
+ GS10: 10-Year Treasury Constant Maturity Rate & 5\% \\ 
+ \hline
+ GS30: 30-Year Treasury Constant Maturity Rate & 5\% \\
+ \hline
+ DCOILWTICO: Crude Oil Prices: West Texas Intermediate (WTI) & 5\% \\ 
+ \hline
+ XLE: Energy Stocks (Energy Select Sector SPDR Fund) & 15\% \\ 
+ \hline
+ GC=F: Gold Futures & 30\% \\ 
+ \hline
+ FXE: Foreign Currencies (CurrencyShares Euro Trust) & 5\% \\
+ \hline
+ DBC: Commodities (Invesco DB Commodity Index Tracking Fund) & 5\% \\ 
+ \hline
+ BTC-USD: Cryptocurrencies (Bitcoin) & 30\% \\ 
+ \hline
+\end{tabular}
+ \label{table:tab1}
+ \caption{Optimized Portfolio Composition.}
+\end{table}
+
+
+In figure \ref{fig:mesh4}, the CPI adjusted optimized portfolio is compared to the CPI adjusted equally weighted portfolio as a benchmark. Our optimized portfolio can substantially outperforms the portfolio which does not consider the inflation in its composition.
+
+In figure \ref{fig:mesh5}, possible random portfolios were simulated. The optimized portfolio marked by a red star lies exactly on the efficient frontier which mean that there is no higher return (lower risk) to be achieved with the given risk (return).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{paper/figure/PNL.pdf}
+    \caption{Cumulative Returns.}
+    \label{fig:mesh4}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{paper/figure/Optimal_PF.pdf}
+    \caption{Optimal Portfolio with Efficient Frontier.}
+    \label{fig:mesh5}
+\end{figure}
 
 \end{document}
