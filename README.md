@@ -13,3 +13,38 @@ python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 ```
+
+Once the dependencies are installed, you can run the program by running the following command in the terminal:
+
+```bash
+python3 code/src/processing/downloader.py [-h] [-d DATA_FOLDER]
+```
+
+The program will then download the data from Yahoo Finance and save it to the specified folder. The default folder is `data/`.
+
+The optimisation algorithm is explored in the `code/src/main.ipynb` notebook. The notebook can be run by running the following command in the terminal:
+
+```bash
+jupyter notebook code/src/main.ipynb
+```
+
+This can be also explored in Docker. To do so, run the following commands in the terminal:
+
+```bash
+[sudo] docker build --build-arg CACHEBUST=$(date +%s) -t markowitz .
+[sudo] docker run -p 8888:8888 markowitz
+```
+
+## Development
+
+### Installation
+
+To install the dependencies, run the following commands in the terminal:
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+pip install -r requirements-dev.txt
+pre-commit install
+```
