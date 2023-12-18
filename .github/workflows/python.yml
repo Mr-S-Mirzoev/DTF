@@ -3,8 +3,16 @@ name: Python CI
 on:
   push:
     branches: [main]
+    paths:
+      - 'paper/*.tex'
+      - 'paper/figure/*'
+    tags:
+      - '*'
   pull_request:
     branches: [main]
+    paths:
+      - 'paper/*.tex'
+      - 'paper/figure/*'
   workflow_dispatch:
 
 jobs:
@@ -35,7 +43,6 @@ jobs:
         uses: actions/cache@v2
         with:
           path: |
-            venv
             .cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('**/*.lock') }}
           restore-keys: |
@@ -59,6 +66,42 @@ jobs:
       - name: Pylint
         run: |
           find . -type f -name "*.py" -not -path "./venv/*" | xargs -r pylint
+
+      - name: Cache LaTeX packages
+        uses: actions/cache@v2
+        with:
+          path: |
+            /usr/share/texlive
+          key: ${{ runner.os }}-texlive-${{ hashFiles('**/*.tex') }}
+          restore-keys: |
+            ${{ runner.os }}-texlive-
+
+      - name: Install LaTeX packages
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y texlive-latex-extra texlive-font-utils
+
+      - name: Compile LaTeX documents
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+        run: |
+          cd paper
+          pdflatex paper.tex
+          pdflatex presentation.tex
+
+      - name: Upload paper.pdf as an artifact
+        uses: actions/upload-artifact@v2
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+        with:
+          name: paper-pdf
+          path: paper/paper.pdf
+
+      - name: Upload presentation.pdf as an artifact
+        uses: actions/upload-artifact@v2
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+        with:
+          name: presentation-pdf
+          path: paper/presentation.pdf
 
       - name: Debug log
         run: echo Finished running CI
