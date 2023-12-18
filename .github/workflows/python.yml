@@ -3,16 +3,10 @@ name: Python CI
 on:
   push:
     branches: [main]
-    paths:
-      - 'paper/*.tex'
-      - 'paper/figure/*'
     tags:
       - '*'
   pull_request:
     branches: [main]
-    paths:
-      - 'paper/*.tex'
-      - 'paper/figure/*'
   workflow_dispatch:
 
 jobs:
@@ -67,38 +61,45 @@ jobs:
         run: |
           find . -type f -name "*.py" -not -path "./venv/*" | xargs -r pylint
 
+      - name: Determine if LaTeX files changed
+        id: latex-changed
+        run: |
+          echo "LATEX_CHANGED=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -E '\.tex$' || echo '[latex]' in commit message)" >> $GITHUB_ENV
+        if: github.event_name == 'push' || github.event_name == 'pull_request'
+
       - name: Cache LaTeX packages
+        if: env.LATEX_CHANGED != ''
         uses: actions/cache@v2
         with:
           path: |
             /usr/share/texlive
-          key: ${{ runner.os }}-texlive-${{ hashFiles('**/*.tex') }}
+          key: ${{ runner.os }}-texlive-${{ hashFiles('paper/*.tex') }}
           restore-keys: |
             ${{ runner.os }}-texlive-
 
       - name: Install LaTeX packages
-        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+        if: env.LATEX_CHANGED != ''
         run: |
           sudo apt-get update
           sudo apt-get install -y texlive-latex-extra texlive-font-utils
 
       - name: Compile LaTeX documents
-        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+        if: env.LATEX_CHANGED != ''
         run: |
           cd paper
           pdflatex paper.tex
           pdflatex presentation.tex
 
       - name: Upload paper.pdf as an artifact
+        if: env.LATEX_CHANGED != ''
         uses: actions/upload-artifact@v2
-        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
         with:
           name: paper-pdf
           path: paper/paper.pdf
 
       - name: Upload presentation.pdf as an artifact
+        if: env.LATEX_CHANGED != ''
         uses: actions/upload-artifact@v2
-        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
         with:
           name: presentation-pdf
           path: paper/presentation.pdf
