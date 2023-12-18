@@ -30,22 +30,22 @@
 \section{Introduction}
 
 
-In an era marked by economic uncertainties and dynamic financial landscapes, the importance of constructing resilient investment portfolios cannot be underestimated. Investors face a constant challenge in preserving and enhancing the real value of their wealth, especially when confronted with the persistent threat of inflation. As inflation erodes purchasing power, traditional investment strategies may prove insufficient, necessitating a paradigm shift towards a more sophisticated approach.
+The importance of constructing resilient investment portfolios cannot be underestimated in an era marked by economic uncertainties and dynamic financial landscapes. Investors face a constant challenge in preserving and enhancing the real value of their wealth, especially when confronted with the persistent threat of inflation. As inflation erodes purchasing power, traditional investment strategies may prove insufficient, necessitating a paradigm shift towards a more sophisticated approach.
 
-This paper delves into the realm of portfolio optimization using the renowned Markowitz framework, with a specific focus on navigating the complexities of an inflationary environment. Rather than adhering to conventional wisdom, our methodology begins with a comprehensive analysis of various asset classes to discern their correlation with inflation. Recognizing that not all assets respond uniformly to inflationary pressures, we aim to identify and select those that not only weather the storm but offer a shield against the corrosive effects of rising prices.
+This paper delves into the realm of portfolio optimisation using the renowned Markowitz framework, explicitly focusing on navigating the complexities of an inflationary environment. Rather than adhering to conventional wisdom, our methodology begins with a comprehensive analysis of various asset classes to discern their correlation with inflation. Recognising that not all assets respond uniformly to inflationary pressures, we aim to identify and select those that weather the storm and offer a shield against rising prices' corrosive effects.
 
-The initial phase of our investigation involves an examination of different asset classes, ranging from equities and fixed income securities to commodities and real assets. By scrutinizing historical data and employing statistical techniques, we seek to unveil the intricate relationships between these asset classes and inflation. Our objective is to discern patterns and identify the investment instruments that exhibit a robust correlation with inflationary trends.
+The initial phase of our investigation involves an examination of different asset classes, ranging from equities and fixed-income securities to commodities and tangible assets. We seek to unveil the intricate relationships between these asset classes and inflation by scrutinising historical data and employing statistical techniques. Our objective is to discern patterns and identify the investment instruments that exhibit a robust correlation with inflationary trends.
 
-Building on this foundation, we move forward to the application of the Markowitz portfolio optimization model. Recognizing that optimal portfolios are not one-size-fits-all, we tailor our approach to incofixed-incomeunique characteristics of inflation-sensitive assets. Through a judicious combination of these assets, we aim to construct portfolios that not only maximize returns but, crucially, provide a hedge against the eroding effects of inflation.
+Building on this foundation, we apply the Markowitz portfolio optimisation model. Recognising that optimal portfolios are not one-size-fits-all, we tailor our approach to fixed-income unique characteristics of inflation-sensitive assets. Through a judicious combination of these assets, we aim to construct portfolios that maximise returns and, crucially, hedge against the eroding effects of inflation.
 
-As a result Markowitz'skowitz portfolio optimization under the specter of inflation, we show that a portfolio can be constructed which lies on the efficient frontier compared to an equally weighted portfolio. By strategically selecting assets that exhibit resilience in the face of inflation, the optimized portfolio outperforms an the CPI adjusted equally weighted portfolio substantially.
+As a result of Markowitz's portfolio optimisation under the spectre of inflation, we show that a portfolio that lies on the efficient frontier compared to an equally weighted portfolio can be constructed. The optimised portfolio substantially outperforms the CPI-adjusted, equally weighted portfolio by strategically selecting assets that exhibit resilience in the face of inflation.
 
 \newpage
 
 
-\section{Asset Classes}
+\section{Approach}
 
-For an asset class to offer protection against inflation, the asset returns have to be positively correlated with the CPI (Consumer Price Index) when we assume that only long positions can be held; so, when the CPI increases, the asset returns should also increase. The approach we present will be based on filtering. Starting from a large pool of potential assets that could hedge against inflation, we want to understand what are the assets that are more prone to have a positive relationship with inflation. That means analyzing the yearly inflation rates, and see what are the subsequent returns of a given class. We therefore expect that besides high correlation with inflation, when inflation is very high, returns also should be very high (tail inflation corresponds with the tail of returns). We test the following asset classes and sectors for a hedge against inflation:
+For an asset class to offer protection against inflation, the asset returns have to be positively correlated with the CPI (Consumer Price Index) when we assume that only long positions can be held; so, when the CPI increases, the asset returns should also increase. The approach we present will be based on filtering. Starting from a large pool of potential assets that could hedge against inflation, we want to understand what are the assets that are more prone to have a positive relationship with inflation. That means analysing the yearly inflation rates and seeing the subsequent returns of a given class. We expect that besides a high correlation with inflation when inflation is very high, returns should also be very high (tail inflation corresponds with the tail of returns). We test the following asset classes and sectors for a hedge against inflation:
 
 \begin{itemize}
     \item XHB: Median Sale Price of Houses Sold in the United States
@@ -64,22 +64,34 @@ For an asset class to offer protection against inflation, the asset returns have
 \end{itemize}
 
 
-\subsubsection*{Visual inspection}
+\subsection{Visual inspection}
 
-Visual inspection is a very quick way to determine if there's a relationship between the different asset classes. We look at the time series of the Log Returns of both the adjusted and non adjusted returns to see any potential relationships. Altough this is not very clear, it allows us to draw the first conclusions. In figure \ref{fig:mesh2} on page \pageref{fig:mesh2}, we can clearly see that bonds (GS10, GS30) are very very closely related and also follow CPI. We also can see a relationship between DBC (commodities) and XLE (energy).
+Visual inspection is a rapid way to determine if there's a relationship between the different asset classes. We look at the time series of the Log Returns of both the adjusted and non-adjusted returns to see potential relationships. Although this is unclear, it allows us to draw the first conclusions. In figure \ref{fig:mesh2} on page \pageref{fig:mesh2}, we can see that bonds (GS10, GS30) are very very closely related and also follow CPI. We also can see a relationship between DBC (commodities) and XLE (energy).
 
 \begin{figure}
     \centering
     \includegraphics[width=1\textwidth]{figure/Normalized_Returns.pdf}
-    \caption{Normalized Yearly Rolling Log-Returns of different Asset Classes.}
+    \caption{Normalised Yearly Rolling Log-Returns of different Asset Classes.}
     \label{fig:mesh2}
+\end{figure}
+
+\subsection{Facet Grid}
+
+We plotted a Facet Grid of the returns and CPI to see further the first visual relation between the asset classes and CPI (figure \ref{fig:mesh6}). Especially the commodities and the energy sectors show a robust positive relationship according to these plots. The gold futures (GC=F) and foreign currencies (FXE) plots are interesting to see. The relationship is generally strongly positive up to point 0.4 in the CPI data. Some data points between 0.4 and 0.6 lie, which pulls the linear relationship downwards. Because it's a linear plot, the fewer points after 0.4 than before 0.4 skew the relation downwards, if one corrects for this, the relationship between the asset class and CPI would be strongly positive.
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{paper/figure/CPI_Returns.pdf}
+    \caption{Facet Grid of each Asset Class against the CPI.}
+    \label{fig:mesh6}
 \end{figure}
 
 
 
-\subsubsection*{Correlation}
+\subsection{Correlation}
 
-High correlation shows a linear relationship between the data. Using our data of yearly returns (rolling 1Y log returns) we can compute the pairwise correlation (correlation matrix). We are interested in the correlation between the CPI (CPIAUSCL) and a given asset class. The reason to compute the correlation in the returns and not in the prices, is that we can assume that returns are independent and identically distributed. Based on this result, we can observe that Energy ETF (XLE), Bonds (GS10, GS30), Oil (DCOILWTICO), Commodities (DBC)... are very postively correlated with inflation.
+A high correlation shows a linear relationship between the data. Using our data of yearly returns (rolling 1Y log returns), we can compute the pairwise correlation (correlation matrix). We are interested in the correlation between the CPI (CPIAUSCL) and a given asset class. The reason to compute the correlation in the returns and not in the prices is that we can assume that returns are independent and identically distributed. Based on this result, we can observe that Energy ETF (XLE), Bonds (GS10, GS30), Oil (DCOILWTICO), and Commodities (DBC)... are significantly positively correlated with inflation.
 
 \begin{figure}[H]
     \centering
@@ -89,13 +101,13 @@ High correlation shows a linear relationship between the data. Using our data of
 \end{figure}
 
 
-\subsubsection*{Cointegration}
+\subsection{Cointegration}
 
-Based on the understanding of correlation in financial data, we can extend our analysis to explore the concept of cointegration. Cointegration is a statistical property of a collection of time series variables which indicates that a long-term equilibrium relationship exists between them. Unlike correlation that merely identifies the linear relationship in the level of data, cointegration delves deeper by detecting a link in their long-term trends, despite short-term deviations.
+Based on the understanding of correlation in financial data, we can extend our analysis to explore the concept of cointegration. Cointegration is a statistical property of a collection of time series variables, indicating a long-term equilibrium relationship between them. Unlike correlation, which merely identifies the linear relationship in the level of data, cointegration delves deeper by detecting a link in their long-term trends despite short-term deviations.
 
-In our case, examining cointegration among assets like the Energy ETF (XLE), Bonds (GS10, GS30), Oil (DCOILWTICO), Commodities (DBC), and inflation metrics such as the CPI, would be insightful. This is particularly important because financial markets often exhibit trends and mean-reverting behavior over longer periods. While correlation informs us about the degree of linear relationship in the returns, cointegration helps us understand the extent to which these asset classes move together over time, bound by an equilibrium relationship.
+In our case, examining cointegration among assets like the Energy ETF (XLE), Bonds (GS10, GS30), Oil (DCOILWTICO), Commodities (DBC), and inflation metrics such as the CPI, would be insightful. This is particularly important because financial markets often exhibit trends and mean-reverting behaviour over extended periods. While correlation informs us about the degree of linear relationship in the returns, cointegration helps us understand the extent to which these asset classes move together over time, bound by an equilibrium relationship.
 
-By investigating cointegration, we can assess whether any discrepancies between these assets and inflation are temporary or indicative of a fundamental shift. This understanding is crucial for long-term investment strategies and risk management, as it helps in identifying pairs or groups of assets that are likely to move in sync over time. Such analysis is especially relevant in market conditions characterized by significant economic changes, where long-term relationships might be more stable and reliable compared to short-term correlations.
+By investigating cointegration, we can assess whether any discrepancies between these assets and inflation are temporary or indicative of a fundamental shift. This understanding is crucial for long-term investment strategies and risk management, as it helps identify pairs or groups of assets that are likely to move in sync over time. Such analysis is especially relevant in market conditions characterised by significant economic changes, where long-term relationships might be more stable and reliable than short-term correlations.
 
 \begin{figure}[H]
     \centering
@@ -104,9 +116,11 @@ By investigating cointegration, we can assess whether any discrepancies between 
     \label{fig:mesh3}
 \end{figure}
 
-\section{Approach and Results}
 
-In the following part we describe in more detail our approach as well as the results. 
+
+\section{Results}
+
+In the following part, we describe our approach and the results in more detail. 
 
 \subsection{The Concept of Portfolio Optimization}
 
@@ -142,7 +156,7 @@ where \( \sigma_p^2 \) is the portfolio variance, \( \sigma_{ij} \) is the covar
 
 \subsubsection*{Sharpe Ratio}
 
-The Sharpe ratio is used to measure the risk-adjusted return of the portfolio. It put the portfolio return into relation with the portfolio's standard deviation and is calculated as follows:
+The Sharpe ratio is used to measure the risk-adjusted return of the portfolio. It puts the portfolio return into relation with the portfolio's standard deviation and is calculated as follows:
 
 \begin{equation}
 \text{Sharpe Ratio} = \frac{R_p - R_f}{\sigma_p}
@@ -150,40 +164,43 @@ The Sharpe ratio is used to measure the risk-adjusted return of the portfolio. I
 
 where \( R_f \) is the risk-free rate.
 
+Because we already adjusted the returns for the CPI data, the risk-free rate is 0 in this case.
+
 \subsection{The Optimization Problem}
 
-The objective of the  portfolio optimization is to find the set of weights \( \{ w_i \} \) that maximizes the Sharpe ratio, or alternatively, minimizes the negative Sharpe ratio.
+The portfolio optimisation aims to find the set of weights \( \{ w_i \} \) that maximises the Sharpe ratio or, alternatively, minimises the negative Sharpe ratio.
 
 
-For the optimization problem, we put in place the following two constraints to ensure a level of diversification in the final pportfolio:
 
-\begin{itemize}
-    \item The sum of the weights must equal 1: \( \sum_{i=1}^{n} w_i = 1 \).
-    \item Each weight must be within predefined bounds of 5\% and 30\%.
-\end{itemize}
 
 \subsubsection*{Method}
 
-The optimization is typically performed using numerical methods, such as the Sequential Least Squares Programming (SLSQP) algorithm used in the provided Python code. This algorithm is commonly used for solving nonlinear constrained optimization problems. It belongs to the class of sequential quadratic programming methods and is particularly effective for problems where the objective function and constraints are nonlinear.
+The optimisation is typically performed using numerical methods, such as the Sequential Least Squares Programming (SLSQP) algorithm used in the provided Python code. This algorithm is commonly used for solving nonlinear constrained optimisation problems. It belongs to the class of sequential quadratic programming methods and is particularly effective for problems with nonlinear objective functions and constraints.
 
-The primary goal of the SLSQP algorithm is to find the values of the decision variables that minimize or maximize a given objective function, subject to a set of constraints. In mathematical terms, the algorithm aims to solve problems of the form:
+The primary goal of the SLSQP algorithm is to find the values of the decision variables that minimise or maximise a given objective function, subject to a set of constraints. In mathematical terms, the algorithm aims to solve problems of the form:
 
-Minimize or maximize \( f(x) \) with subject to:
+Minimise or maximise \( f(x) \) with subject to:
 \begin{itemize}
     \item \( c_j(x) &= 0, \quad j = 1, \ldots, m \text{ (equality constraints)} \)
     \item \( c_k(x) &\geq 0, \quad k = 1, \ldots, n \text{ (inequality constraints)} \)
 \end{itemize}
 
 Here, \( x \) represents the vector of decision variables, \( f(x) \) is the objective function, and \( c_j(x) \) and \( c_k(x) \) are the equality and inequality constraints, respectively.
-The SLSQP algorithm iteratively refines its solution by approximating the objective function and constraints using quadratic models. It combines aspects of the Sequential Quadratic Programming (SQP) method with the use of least squares minimization. The algorithm proceeds through a series of iterations, adjusting the decision variables to move toward an optimal solution while satisfying the constraints.
+The SLSQP algorithm iteratively refines its solution by approximating the objective function and constraints using quadratic models. It combines aspects of the Sequential Quadratic Programming (SQP) method with least squares minimisation. The algorithm proceeds through a series of iterations, adjusting the decision variables to achieve an optimal solution while satisfying the constraints.
 
-Overall, the Sequential Least Squares Programming algorithm is a versatile optimization tool suitable for a wide range of nonlinear constrained optimization problems, making it particularly valuable in various fields, including finance, engineering, and scientific research.
+Overall, the Sequential Least Squares Programming algorithm is a versatile optimisation tool suitable for various nonlinear-constrained optimisation problems. It is particularly valuable in multiple fields, including finance, engineering, and scientific research.
+
 
 \subsection{Optimization Results}
 
-According to our asset class selection methodology as well as optimization we have the final portfolio which is listed in table 1:
+Based on our asset class selection methodology and optimisation, we have the final portfolio, which is listed in Table 1. For the optimisation problem, we put in place the following two constraints to ensure a level of diversification in the final portfolio:
 
+\begin{itemize}
+    \item The sum of the weights must equal 1: \( \sum_{i=1}^{n} w_i = 1 \).
+    \item Each weight must be within predefined bounds of 5\% and 30\%.
+\end{itemize}
 
+With these constraints, we get the following final portfolio:
 
 \begin{table}[H]
 \centering
@@ -209,13 +226,32 @@ According to our asset class selection methodology as well as optimization we ha
  \hline
 \end{tabular}
  \label{table:tab1}
- \caption{Optimized Portfolio Composition.}
+ \caption{Optimised Portfolio Composition.}
 \end{table}
 
 
-In figure \ref{fig:mesh4}, the CPI adjusted optimized portfolio is compared to the CPI adjusted equally weighted portfolio as a benchmark. Our optimized portfolio can substantially outperforms the portfolio which does not consider the inflation in its composition.
+In figure \ref{fig:mesh4}, the CPI-adjusted optimised portfolio is compared to the CPI-adjusted equally weighted portfolio as a benchmark. Our optimised portfolio can substantially outperform the portfolio that does not consider inflation in its composition.
 
-In figure \ref{fig:mesh5}, possible random portfolios were simulated. The optimized portfolio marked by a red star lies exactly on the efficient frontier which mean that there is no higher return (lower risk) to be achieved with the given risk (return).
+Possible random portfolios were simulated in figure \ref{fig:mesh5}. The optimised portfolio marked by a red star lies precisely on the efficient frontier, meaning that no higher return (lower risk) can be achieved with the given risk (return).
+
+In the following table, one can find the presented measures mentioned at the beginning of chapter 3. The volatility is strongly influenced by the overweight of the asset class cryptocurrencies (Bitcoin):
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ | m{7cm} | m{4cm} | }
+ \hline
+ \textbf{Measure} & \textbf{Result} \\
+ \hline
+ Expected Annual Return & 9.82\% \\ 
+ \hline
+ Risk (Annual standard deviation) & 19.96\% \\
+ \hline
+ Sharpe Ratio 0.4922 & 0.4922 \\ 
+ \hline
+\end{tabular}
+ \label{table:tab2}
+ \caption{KPIs.}
+\end{table}
 
 \begin{figure}[H]
     \centering
@@ -230,5 +266,17 @@ In figure \ref{fig:mesh5}, possible random portfolios were simulated. The optimi
     \caption{Optimal Portfolio with Efficient Frontier.}
     \label{fig:mesh5}
 \end{figure}
+
+
+
+
+\newpage
+
+\section{Conclusion and Outlook}
+
+We have seen that a portfolio can be constructed which considers the relationship between various asset classes and inflation. This portfolio, which is optimised according to Markowitz, significantly outperforms a simple, equally weighted portfolio. This analysis was done over a horizon of 9 years, including an economy with low inflation and a recent one with a high inflationary environment. \\
+
+This optimisation can be done in many countries and specific sectors for further research. In this paper, we focused on the US with the US CPI data because of the sufficient data availability. In the future, with more data, this optimisation can also be carried out over a longer horizon with multiple inflationary environment cycles.
+
 
 \end{document}
