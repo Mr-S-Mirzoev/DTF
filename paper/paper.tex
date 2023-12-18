@@ -5,20 +5,39 @@
 \onehalfspacing
 \usepackage{float}
 \usepackage{amsmath}
+\usepackage{titling} % Allows custom title configuration
 
 \title{Markowitz Portfolio Optimization with Inflation}
-\author{Pablo Duce Cabeza, Djordje Nikolic, Sergey Mirzoev, Marc Tschudi}
+\author{Pablo Duce Cabeza \\ Sergey Mirzoev \\ Marc Tschudi}
 \date{December 2023}
+
+% Custom title page
+\makeatletter
+\renewcommand{\maketitle}{
+    \begin{titlepage}
+        \vspace*{\stretch{1}}
+        \begin{center}
+            \Large\textbf{\@title}
+        \end{center}
+        \vspace{\stretch{2}}
+        \begin{center}
+            \large\@author
+        \end{center}
+        \vspace{\stretch{3}}
+        \begin{center}
+            \large\@date
+        \end{center}
+        \vspace{\stretch{0.5}}
+        \begin{center}
+            \includegraphics[width=0.4\textwidth]{figure/uzh_logo_e_pos.eps}
+        \end{center}
+    \end{titlepage}
+}
+\makeatother
 
 \begin{document}
 
 \maketitle
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.4\textwidth]{figure/uzh_logo_e_pos.eps}
-    \label{fig:mesh0}
-\end{figure}
 
 \newpage
 \tableofcontents
@@ -28,7 +47,6 @@
 \newpage
 
 \section{Introduction}
-
 
 The importance of constructing resilient investment portfolios cannot be underestimated in an era marked by economic uncertainties and dynamic financial landscapes. Investors face a constant challenge in preserving and enhancing the real value of their wealth, especially when confronted with the persistent threat of inflation. As inflation erodes purchasing power, traditional investment strategies may prove insufficient, necessitating a paradigm shift towards a more sophisticated approach.
 
@@ -41,7 +59,6 @@ Building on this foundation, we apply the Markowitz portfolio optimisation model
 As a result of Markowitz's portfolio optimisation under the spectre of inflation, we show that a portfolio that lies on the efficient frontier compared to an equally weighted portfolio can be constructed. The optimised portfolio substantially outperforms the CPI-adjusted, equally weighted portfolio by strategically selecting assets that exhibit resilience in the face of inflation.
 
 \newpage
-
 
 \section{Approach}
 
@@ -63,7 +80,6 @@ For an asset class to offer protection against inflation, the asset returns have
     \item XLE: Energy Stocks (Energy Select Sector SPDR Fund)
 \end{itemize}
 
-
 \subsection{Visual inspection}
 
 Visual inspection is a rapid way to determine if there's a relationship between the different asset classes. We look at the time series of the Log Returns of both the adjusted and non-adjusted returns to see potential relationships. Although this is unclear, it allows us to draw the first conclusions. In figure \ref{fig:mesh2} on page \pageref{fig:mesh2}, we can see that bonds (GS10, GS30) are very very closely related and also follow CPI. We also can see a relationship between DBC (commodities) and XLE (energy).
@@ -77,8 +93,7 @@ Visual inspection is a rapid way to determine if there's a relationship between 
 
 \subsection{Facet Grid}
 
-We plotted a Facet Grid of the returns and CPI to see further the first visual relation between the asset classes and CPI (figure \ref{fig:mesh6}). Especially the commodities and the energy sectors show a robust positive relationship according to these plots. The gold futures (GC=F) and foreign currencies (FXE) plots are interesting to see. The relationship is generally strongly positive up to point 0.4 in the CPI data. Some data points between 0.4 and 0.6 lie, which pulls the linear relationship downwards. Because it's a linear plot, the fewer points after 0.4 than before 0.4 skew the relation downwards, if one corrects for this, the relationship between the asset class and CPI would be strongly positive.
-
+We plotted a Facet Grid of the returns and CPI to see further the first visual relation between the asset classes and CPI (figure \ref{fig:mesh6}). Especially the commodities and the energy sectors show a robust positive relationship according to these plots. The gold futures (GC=F) and foreign currencies (FXE) plots are interesting to see. The relationship is generally strongly positive up to point 0.4 in the CPI data. Some data points between 0.4 and 0.6 lie, which pulls the linear relationship downwards. Because it's a linear plot, the fewer points after 0.4 than before 0.4 skew the relation downwards; if one corrects for this, the relationship between the asset class and CPI would be strongly positive.
 
 \begin{figure}[H]
     \centering
@@ -86,8 +101,6 @@ We plotted a Facet Grid of the returns and CPI to see further the first visual r
     \caption{Facet Grid of each Asset Class against the CPI.}
     \label{fig:mesh6}
 \end{figure}
-
-
 
 \subsection{Correlation}
 
@@ -99,7 +112,6 @@ A high correlation shows a linear relationship between the data. Using our data 
     \caption{Correlation Matrix.}
     \label{fig:mesh1}
 \end{figure}
-
 
 \subsection{Cointegration}
 
@@ -115,8 +127,6 @@ By investigating cointegration, we can assess whether any discrepancies between 
     \caption{Cointegration Matrix.}
     \label{fig:mesh3}
 \end{figure}
-
-
 
 \section{Results}
 
@@ -166,12 +176,9 @@ where \( R_f \) is the risk-free rate.
 
 Because we already adjusted the returns for the CPI data, the risk-free rate is 0 in this case.
 
-\subsection{The Optimization Problem}
+\subsection{The Optimisation Problem}
 
 The portfolio optimisation aims to find the set of weights \( \{ w_i \} \) that maximises the Sharpe ratio or, alternatively, minimises the negative Sharpe ratio.
-
-
-
 
 \subsubsection*{Method}
 
@@ -179,17 +186,16 @@ The optimisation is typically performed using numerical methods, such as the Seq
 
 The primary goal of the SLSQP algorithm is to find the values of the decision variables that minimise or maximise a given objective function, subject to a set of constraints. In mathematical terms, the algorithm aims to solve problems of the form:
 
-Minimise or maximise \( f(x) \) with subject to:
+Minimise or maximise \( f(x) \) subject to:
 \begin{itemize}
-    \item \( c_j(x) &= 0, \quad j = 1, \ldots, m \text{ (equality constraints)} \)
-    \item \( c_k(x) &\geq 0, \quad k = 1, \ldots, n \text{ (inequality constraints)} \)
+    \item \( c_j(x) = 0, \quad j = 1, \ldots, m \) (equality constraints)
+    \item \( c_k(x) \geq 0, \quad k = 1, \ldots, n \) (inequality constraints)
 \end{itemize}
 
 Here, \( x \) represents the vector of decision variables, \( f(x) \) is the objective function, and \( c_j(x) \) and \( c_k(x) \) are the equality and inequality constraints, respectively.
 The SLSQP algorithm iteratively refines its solution by approximating the objective function and constraints using quadratic models. It combines aspects of the Sequential Quadratic Programming (SQP) method with least squares minimisation. The algorithm proceeds through a series of iterations, adjusting the decision variables to achieve an optimal solution while satisfying the constraints.
 
 Overall, the Sequential Least Squares Programming algorithm is a versatile optimisation tool suitable for various nonlinear-constrained optimisation problems. It is particularly valuable in multiple fields, including finance, engineering, and scientific research.
-
 
 \subsection{Optimization Results}
 
@@ -204,7 +210,7 @@ With these constraints, we get the following final portfolio:
 
 \begin{table}[H]
 \centering
-\begin{tabular}{ | m{7cm} | m{4cm} | }
+\begin{tabular}{ | c | c | }
  \hline
  \textbf{Asset Class} & \textbf{Weight} \\
  \hline
@@ -229,7 +235,6 @@ With these constraints, we get the following final portfolio:
  \caption{Optimised Portfolio Composition.}
 \end{table}
 
-
 In figure \ref{fig:mesh4}, the CPI-adjusted optimised portfolio is compared to the CPI-adjusted equally weighted portfolio as a benchmark. Our optimised portfolio can substantially outperform the portfolio that does not consider inflation in its composition.
 
 Possible random portfolios were simulated in figure \ref{fig:mesh5}. The optimised portfolio marked by a red star lies precisely on the efficient frontier, meaning that no higher return (lower risk) can be achieved with the given risk (return).
@@ -238,7 +243,7 @@ In the following table, one can find the presented measures mentioned at the beg
 
 \begin{table}[H]
 \centering
-\begin{tabular}{ | m{7cm} | m{4cm} | }
+\begin{tabular}{ | c | c | }
  \hline
  \textbf{Measure} & \textbf{Result} \\
  \hline
@@ -267,16 +272,12 @@ In the following table, one can find the presented measures mentioned at the beg
     \label{fig:mesh5}
 \end{figure}
 
-
-
-
 \newpage
 
 \section{Conclusion and Outlook}
 
-We have seen that a portfolio can be constructed which considers the relationship between various asset classes and inflation. This portfolio, which is optimised according to Markowitz, significantly outperforms a simple, equally weighted portfolio. This analysis was done over a horizon of 9 years, including an economy with low inflation and a recent one with a high inflationary environment. \\
+We have seen that a portfolio can be constructed considering the relationship between various asset classes and inflation. This portfolio, which is optimised according to Markowitz, significantly outperforms a simple, equally weighted portfolio. This analysis was done over a horizon of 9 years, including an economy with low inflation and a recent one with a high inflationary environment. \\
 
 This optimisation can be done in many countries and specific sectors for further research. In this paper, we focused on the US with the US CPI data because of the sufficient data availability. In the future, with more data, this optimisation can also be carried out over a longer horizon with multiple inflationary environment cycles.
-
 
 \end{document}

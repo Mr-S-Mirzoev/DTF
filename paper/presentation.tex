@@ -3,6 +3,7 @@
 \usepackage{graphicx} % Required for inserting images
 \usepackage{eso-pic}
 \usepackage[absolute,overlay]{textpos}
+
 \setbeamertemplate{section in toc}[sections numbered]
 \setbeamertemplate{subsection in toc}[ball unnumbered]
 \setbeamertemplate{footline}
@@ -26,10 +27,8 @@
   \AtPagemyUpperLeft{{\includegraphics[width=2.5cm,keepaspectratio]{figure/uzh_logo_e_neg.eps}}}
 }%
 
-
-
 \title{Markowitz Portfolio Optimization with Inflation}
-\author{Pablo Duce Cabeza, Djordje Nikolic, Sergey Mirzoev, Marc Tschudi}
+\author{Pablo Duce Cabeza, Sergey Mirzoev, Marc Tschudi}
 \date{December 2023}
 
 \begin{document}
@@ -83,7 +82,7 @@
   \begin{itemize}
     \item Investigate the relationship between various asset classes and inflation.
     \item Analyse CPI, Oil, Gold, Bonds, Real Estate, Bitcoin, and S\&P 500.
-    \item Develop a portfolio optimized for inflation protection.
+    \item Develop a portfolio optimised for inflation protection.
   \end{itemize}
 \end{frame}
 
@@ -91,7 +90,7 @@
 
 \begin{frame}{Introduction}
   \begin{itemize}
-    \item Hypothesis: Certain assets have a higher correlation with inflation and therefore offer a natural hedge against inflation.
+    \item Hypothesis: Certain assets have a higher correlation with inflation and, therefore, offer a natural hedge against inflation.
     \item Assets considered: TIPS, Gold, Real Estate, Oil, Stocks, Bonds, Bitcoin.
     \item Analysis involves exploring the relationship between inflation and selected assets.
   \end{itemize}
@@ -119,29 +118,23 @@
 \end{frame}
 
 \begin{frame}{Results: KPIs}
-The optimized portfolio exibits the following KPIs:
-\begin{table}[H]
-\centering
-\begin{tabular}{ | m{7cm} | m{4cm} | }
- \hline
- \textbf{Measure} & \textbf{Result} \\
- \hline
- Expected Annual Return & 9.82\% \\ 
- \hline
- Risk (Annual standard deviation) & 19.96\% \\
- \hline
- Sharpe Ratio 0.4922 & 0.49 \\ 
- \hline
-\end{tabular}
- \label{table:tab1}
- \caption{KPIs.}
+The optimised portfolio exhibits the following KPIs:
+\begin{table}
+    \centering
+    \begin{tabular}{|c|c|}
+        \hline
+        \textbf{Measure} & \textbf{Result} \\ \hline % Header row
+        Expected Annual Return & 9.82\% \\ \hline % Data rows with horizontal lines
+        Risk (Annual standard deviation) & 19.96\% \\ \hline
+        Sharpe Ratio & 0.4922 \\ \hline
+    \end{tabular}
+    \caption{KPIs}
+    \label{table:tab1}
 \end{table}
 \end{frame}
 
-
-
 \begin{frame}{Results: Efficient Frontier}
-The optimized portfolio lies on the efficient frontier:
+The optimised portfolio lies on the efficient frontier:
   \begin{figure}
     \centering
     \includegraphics[width=0.75\textwidth]{paper/figure/Optimal_PF.pdf}
@@ -150,7 +143,7 @@ The optimized portfolio lies on the efficient frontier:
 \end{frame}
 
 \begin{frame}{Results: Performance and Benchmark}
-The optimized portfolio adjusted for the CPI outperforms the equally weighted CPI adjusted portfolio:
+The optimised portfolio adjusted for the CPI outperforms the equally weighted CPI-adjusted portfolio:
   \begin{figure}
     \centering
     \includegraphics[width=0.75\textwidth]{paper/figure/PNL.pdf}
