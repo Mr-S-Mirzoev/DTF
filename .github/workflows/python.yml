@@ -61,14 +61,22 @@ jobs:
         run: |
           find . -type f -name "*.py" -not -path "./venv/*" | xargs -r pylint
 
+      - name: Check for LaTeX file changes
+        id: changes
+        uses: dorny/paths-filter@v2
+        with:
+          filters: |
+            latex:
+              - '**/*.tex'
+
       - name: Determine if LaTeX files changed
         id: latex-changed
         run: |
-          echo "LATEX_CHANGED=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -E '\.tex$' || echo '[latex]' in commit message)" >> $GITHUB_ENV
+          echo "LATEX_CHANGED=echo '[latex]' in commit message)" >> $GITHUB_ENV
         if: github.event_name == 'push' || github.event_name == 'pull_request'
 
       - name: Cache LaTeX packages
-        if: env.LATEX_CHANGED != ''
+        if: steps.changes.outputs.latex == 'true' || env.LATEX_CHANGED != ''
         uses: actions/cache@v2
         with:
           path: |
@@ -78,31 +86,34 @@ jobs:
             ${{ runner.os }}-texlive-
 
       - name: Install LaTeX packages
-        if: env.LATEX_CHANGED != ''
+        if: steps.changes.outputs.latex == 'true' || env.LATEX_CHANGED != ''
         run: |
           sudo apt-get update
           sudo apt-get install -y texlive-latex-extra texlive-font-utils
 
       - name: Compile LaTeX documents
-        if: env.LATEX_CHANGED != ''
+        if: steps.changes.outputs.latex == 'true' || env.LATEX_CHANGED != ''
         run: |
           cd paper
           pdflatex paper.tex
           pdflatex presentation.tex
 
-      - name: Upload paper.pdf as an artifact
-        if: env.LATEX_CHANGED != ''
-        uses: actions/upload-artifact@v2
-        with:
-          name: paper-pdf
-          path: paper/paper.pdf
+      - name: Create artifacts directory
+        if: steps.changes.outputs.latex == 'true' || env.LATEX_CHANGED != ''
+        run: mkdir artifacts
 
-      - name: Upload presentation.pdf as an artifact
-        if: env.LATEX_CHANGED != ''
+      - name: Move PDFs to artifacts directory
+        if: steps.changes.outputs.latex == 'true' || env.LATEX_CHANGED != ''
+        run: |
+          mv paper/paper.pdf artifacts/
+          mv paper/presentation.pdf artifacts/
+
+      - name: Upload artifacts
+        if: steps.changes.outputs.latex == 'true' || env.LATEX_CHANGED != ''
         uses: actions/upload-artifact@v2
         with:
-          name: presentation-pdf
-          path: paper/presentation.pdf
+          name: latex-artifacts
+          path: artifacts/
 
       - name: Debug log
         run: echo Finished running CI
