@@ -2,15 +2,15 @@
 
 ## Introduction
 
-This project is a Python implementation of the Markowitz Portfolio Optimization algorithm. The algorithm is used to find the optimal allocation of assets in a portfolio to maximize the expected inflation-adjusted return. The algorithm is based on the work of Harry Markowitz, who won the Nobel Prize in Economics in 1990 for his work on portfolio theory.
+This project is a Python implementation of the Markowitz Portfolio Optimization algorithm. The algorithm is used to find the optimal allocation of assets in a portfolio to maximise the expected inflation-adjusted return. The algorithm is based on the work of Harry Markowitz, who won the Nobel Prize in Economics in 1990 for his work on portfolio theory.
 
 ## Results
 
 ### Key Findings
 
-- **Inflation-Resilient Asset Classes Identified:** The analysis identified several asset classes that exhibit strong correlation with inflation. For that, we explored treasury bonds, crude oil prices, SPX index, real estate, gold futures, and bitcoin.
+- **Inflation-Resilient Asset Classes Identified:** The analysis identified several asset classes that strongly correlate with inflation. For that, we explored treasury bonds, crude oil prices, the SPX index, real estate, gold futures, and bitcoin.
 
-- **Optimized Portfolio Performance:** The optimized portfolio, constructed using the Markowitz framework and adjusted for inflation, outperforms a CPI-adjusted, equally weighted portfolio.
+- **Optimised Portfolio Performance:** The optimised portfolio, constructed using the Markowitz framework and adjusted for inflation, outperforms a CPI-adjusted, equally weighted portfolio.
 
 - **Diversification and Constraints:** The final portfolio includes a diversified mix of assets, each with specified weights, adhering to constraints like the sum of asset weights equaling 1 and individual asset weight upper and lower bounds.
 
@@ -18,11 +18,25 @@ This project is a Python implementation of the Markowitz Portfolio Optimization 
 
 ### Conclusion: Effective Inflation-Resilient Strategy
 
-Portfolios optimized for inflation resilience can significantly outperform traditional portfolios.
+Portfolios optimised for inflation resilience can significantly outperform traditional portfolios.
+
+### Optimised Portfolio Composition
+
+| Asset Class                                       | Weight |
+| ------------------------------------------------- | ------ |
+| GS10: 10-Year Treasury Constant Maturity Rate     | 5%     |
+| GS30: 30-Year Treasury Constant Maturity Rate     | 5%     |
+| DCOILWTICO: Crude Oil Prices: West Texas Intermediate (WTI) | 5% |
+| XLE: Energy Stocks (Energy Select Sector SPDR Fund) | 15%    |
+| GC=F: Gold Futures                                | 30%    |
+| FXE: Foreign Currencies (CurrencyShares Euro Trust) | 5%    |
+| DBC: Commodities (Invesco DB Commodity Index Tracking Fund) | 5% |
+| BTC-USD: Cryptocurrencies (Bitcoin)               | 30%    |
+
 
 ## Usage Instructions
 
-In order to run the program, you must first install the required dependencies. This can be done by running the following commands in the terminal:
+To run the program, you must first install the required dependencies. This can be done by running the following commands in the terminal:
 
 ```bash
 python3 -m venv venv
@@ -38,13 +52,13 @@ python3 code/src/processing/downloader.py [-h] [-d DATA_FOLDER]
 
 The program will then download the data from Yahoo Finance and save it to the specified folder. The default folder is `data/`.
 
-The optimisation algorithm is explored in the `code/src/main.ipynb` notebook. The notebook can be run by running the following command in the terminal:
+The `code/src/main.ipynb` notebook explores the optimisation algorithm. The notebook can be run by running the following command in the terminal:
 
 ```bash
 jupyter notebook code/src/main.ipynb
 ```
 
-This can be also explored in Docker. To do so, run the following commands in the terminal:
+This can also be explored in Docker. To do so, run the following commands in the terminal:
 
 ```bash
 [sudo] docker build --build-arg CACHEBUST=$(date +%s) -t markowitz .

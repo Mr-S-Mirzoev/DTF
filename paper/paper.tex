@@ -50,11 +50,11 @@
 
 The importance of constructing resilient investment portfolios cannot be underestimated in an era marked by economic uncertainties and dynamic financial landscapes. Investors face a constant challenge in preserving and enhancing the real value of their wealth, especially when confronted with the persistent threat of inflation. As inflation erodes purchasing power, traditional investment strategies may prove insufficient, necessitating a paradigm shift towards a more sophisticated approach.
 
-This paper delves into the realm of portfolio optimisation using the renowned Markowitz framework, explicitly focusing on navigating the complexities of an inflationary environment. Rather than adhering to conventional wisdom, our methodology begins with a comprehensive analysis of various asset classes to discern their correlation with inflation. Recognising that not all assets respond uniformly to inflationary pressures, we aim to identify and select those that weather the storm and offer a shield against rising prices' corrosive effects.
+This paper delves into the realm of portfolio optimisation using the renowned Markowitz framework \cite{markowitz1952}, explicitly focusing on navigating the complexities of an inflationary environment. Rather than adhering to conventional wisdom, our methodology begins with a comprehensive analysis of various asset classes to discern their correlation with inflation. Recognising that not all assets respond uniformly to inflationary pressures, we aim to identify and select those that weather the storm and offer a shield against rising prices' corrosive effects.
 
 The initial phase of our investigation involves an examination of different asset classes, ranging from equities and fixed-income securities to commodities and tangible assets. We seek to unveil the intricate relationships between these asset classes and inflation by scrutinising historical data and employing statistical techniques. Our objective is to discern patterns and identify the investment instruments that exhibit a robust correlation with inflationary trends.
 
-Building on this foundation, we apply the Markowitz portfolio optimisation model. Recognising that optimal portfolios are not one-size-fits-all, we tailor our approach to fixed-income unique characteristics of inflation-sensitive assets. Through a judicious combination of these assets, we aim to construct portfolios that maximise returns and, crucially, hedge against the eroding effects of inflation.
+Building on this foundation, we apply the Markowitz portfolio optimisation model \cite{markowitz1952}. Recognising that optimal portfolios are not one-size-fits-all, we tailor our approach to fixed-income unique characteristics of inflation-sensitive assets. Through a judicious combination of these assets, we aim to construct portfolios that maximise returns and, crucially, hedge against the eroding effects of inflation.
 
 As a result of Markowitz's portfolio optimisation under the spectre of inflation, we show that a portfolio that lies on the efficient frontier compared to an equally weighted portfolio can be constructed. The optimised portfolio substantially outperforms the CPI-adjusted, equally weighted portfolio by strategically selecting assets that exhibit resilience in the face of inflation.
 
@@ -136,11 +136,11 @@ In the following part, we describe our approach and the results in more detail.
 
 \subsubsection*{Efficient Frontier}
 
-The heart of Markowitz's theory is the "Efficient Frontier," a graphical representation showing the optimal set of portfolios providing the maximum possible expected return for a given level of risk. Portfolios that lie below the efficient frontier are sub-optimal because they do not provide enough return for the level of risk they carry.
+The heart of Markowitz's theory \cite{markowitz1952} is the "Efficient Frontier," a graphical representation showing the optimal set of portfolios providing the maximum possible expected return for a given level of risk. Portfolios that lie below the efficient frontier are sub-optimal because they do not provide enough return for the level of risk they carry.
 
 \subsubsection*{Risk and Return}
 
-In Markowitz's framework, risk is quantified as the standard deviation of portfolio returns, a measure of variability in returns. Return is the expected return of the portfolio, a weighted sum of the expected returns of the individual assets.
+In Markowitz's framework \cite{markowitz1952}, risk is quantified as the standard deviation of portfolio returns, a measure of variability in returns. Return is the expected return of the portfolio, a weighted sum of the expected returns of the individual assets.
 
 \subsection{Mathematical Formulation}
 
@@ -279,5 +279,15 @@ In the following table, one can find the presented measures mentioned at the beg
 We have seen that a portfolio can be constructed considering the relationship between various asset classes and inflation. This portfolio, which is optimised according to Markowitz, significantly outperforms a simple, equally weighted portfolio. This analysis was done over a horizon of 9 years, including an economy with low inflation and a recent one with a high inflationary environment. \\
 
 This optimisation can be done in many countries and specific sectors for further research. In this paper, we focused on the US with the US CPI data because of the sufficient data availability. In the future, with more data, this optimisation can also be carried out over a longer horizon with multiple inflationary environment cycles.
+
+% References
+\begin{thebibliography}{9}
+
+\bibitem{markowitz1952}
+Markowitz, H. (1952).
+\textit{Portfolio Selection}.
+The Journal of Finance, 7(1), 77-91.
+
+\end{thebibliography}
 
 \end{document}
